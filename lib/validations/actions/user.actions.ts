@@ -4,20 +4,18 @@ import User from "@/lib/models/user.model";
 import { connectToDB } from "@/lib/mongoose";
 
 interface Params {
-    userId: string;
-    username: string;
     name: string;
+    username: string;
+    userId: string;
     bio: string;
     image: string;
-    path: string;
   }
   
   export async function updateUser({
+    name,
+    username,
     userId,
     bio,
-    name,
-    path,
-    username,
     image,
   }: Params): Promise<void> {
     try {
