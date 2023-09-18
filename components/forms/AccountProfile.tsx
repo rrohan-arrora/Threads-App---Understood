@@ -15,7 +15,7 @@ import { UserValidation } from "@/lib/validations/user";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { Textarea } from "../ui/textarea";
 
 interface Props {
@@ -33,14 +33,13 @@ interface Props {
 function onSubmit(values: z.infer<typeof UserValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    const blob = values.profile_photo;
 }
 
-const handleImage = (e: ChangeEvent, fieldChange: (value: String) => void) => {
-    e.preventDefault();
-}
+
 
 const AccountProfile = ({user, btnTitle}: Props) => {
+    const [files, setFiles] = useState<File[]>([]);
     const form = useForm({
         resolver: zodResolver(UserValidation), 
         defaultValues:{
@@ -50,6 +49,26 @@ const AccountProfile = ({user, btnTitle}: Props) => {
             bio: user?.bio || ""
         }
     });
+
+    const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: String) => void) => {
+        e.preventDefault();
+        const filereader = new FileReader();
+        if(e.target.files && e.target.files.length > 0){
+            const file = e.target.files[0];
+
+            setFiles(Array.from(e.target.files));
+            
+            if(!file.type.includes('image')) return;
+
+            filereader.onload = async (event) => {
+                const imageDataUrl = event.target?.result?.toString() || '';
+
+                fieldChange(imageDataUrl);
+            }
+
+            filereader.readAsDataURL(file);
+        }
+    }
     return(
         <Form {...form}>
         <form 
