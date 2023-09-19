@@ -48,7 +48,7 @@ interface Params {
                     //   path: 'communitites'
                     //   model: Community
                     // })
-    }catch(error){
+    }catch(error: any){
       throw new Error(`Failed to fetch user: ${error.message}`);
     }
   }
