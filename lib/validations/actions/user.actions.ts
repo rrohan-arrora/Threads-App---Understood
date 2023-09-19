@@ -37,3 +37,19 @@ interface Params {
       throw new Error(`Failed to create/update user: ${error.message}`);
     }
   }
+
+  export async function fetchUser(userId: string){
+    try{
+      connectToDB();
+
+      return await User
+                    .findOne({id: userId})
+                    // .populate({
+                    //   path: 'communitites'
+                    //   model: Community
+                    // })
+    }catch(error){
+      throw new Error(`Failed to fetch user: ${error.message}`);
+    }
+  }
+
