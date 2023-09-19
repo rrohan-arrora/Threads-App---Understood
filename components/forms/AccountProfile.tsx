@@ -18,9 +18,8 @@ import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { isBase64Image } from "@/lib/utils";
-import { useUploadThing } from "@/lib/uploadthing";
 import { updateUser } from "@/lib/validations/actions/user.actions";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface Props {
     user: {
@@ -39,7 +38,6 @@ interface Props {
 
 const AccountProfile = ({user, btnTitle}: Props) => {
     const [files, setFiles] = useState<File[]>([]);
-    const { startUpload } = useUploadThing("media");
     const router = useRouter();
     const form = useForm({
         resolver: zodResolver(UserValidation), 
@@ -54,15 +52,6 @@ const AccountProfile = ({user, btnTitle}: Props) => {
     const onSubmit = async (values: z.infer<typeof UserValidation>) => {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        const blob = values.profile_photo;
-
-        const hasImageChanged = isBase64Image(blob);
-        if (hasImageChanged) {
-            const imgRes = await startUpload(files);
-            if (imgRes && imgRes[0].fileUrl) {
-                values.profile_photo = imgRes[0].fileUrl;
-            }
-        }
 
         await updateUser({
             name: values.name,
@@ -72,7 +61,7 @@ const AccountProfile = ({user, btnTitle}: Props) => {
             image: values.profile_photo,
           });
 
-
+            
             router.push("/");
           
 

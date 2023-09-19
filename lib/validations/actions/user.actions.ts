@@ -20,7 +20,7 @@ interface Params {
   }: Params): Promise<void> {
     try {
       connectToDB();
-
+    
       await User.findOneAndUpdate(
         { id: userId },
         {
@@ -30,7 +30,8 @@ interface Params {
           image,
           onboarded: true,
         },
-        { upsert: true } // update if there is already or create one
+        { upsert: true,
+          writeConcern: { w: 'majority' }  }, // update if there is already or create one
       );
     } catch (error: any) {
       throw new Error(`Failed to create/update user: ${error.message}`);
