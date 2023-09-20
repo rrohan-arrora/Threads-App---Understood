@@ -16,7 +16,7 @@ async function Page() {
 
   return (
     <>
-      <h1 className='head-text'>Create Thread</h1>
+      <h1 className='head-text'>Do you have any opinion?</h1>
 
       <PostThread userId={JSON.parse(JSON.stringify(userInfo._id))} />
     </>
