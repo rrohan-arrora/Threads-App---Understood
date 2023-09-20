@@ -49,7 +49,7 @@ const Page = async ({params } : {params: {id: string}}) => {
                     author={childItem.author}
                     createdAt={childItem.createdAt}
                     comments={childItem.children}
-                    isComment
+                    isComment={true}
                 />
                 ))}
             </div>
