@@ -26,7 +26,8 @@ function ThreadCard({id,
     content,
     author,
     createdAt,
-    comments, isComment} : Props){
+    comments,
+    isComment} : Props){
         return(
             
             <article className="flex w-full flex-col rounded-xl bg-dark-2 p-7">
